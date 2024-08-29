@@ -24,6 +24,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDto createUser(UserDto userDto) {
         String userId = UUID.randomUUID().toString();
+        userDto.setUserId(userId);
        User user = dtoToEnitity(userDto);
        User savedUser = userRepository.save(user);
        UserDto userDto1 = entityToDto(savedUser);

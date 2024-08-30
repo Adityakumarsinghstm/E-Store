@@ -4,6 +4,7 @@ import com.aditya.electronic.store.dtos.ApiResponseMessage;
 import com.aditya.electronic.store.dtos.UserDto;
 import com.aditya.electronic.store.entities.User;
 import com.aditya.electronic.store.services.UserService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,14 +18,14 @@ public class UserController {
     @Autowired
     private UserService userService;
     @PostMapping
-    public ResponseEntity<UserDto> createUser(@RequestBody UserDto userDto)
+    public ResponseEntity<UserDto> createUser(@Valid @RequestBody UserDto userDto)
     {
         UserDto userDto1 = userService.createUser(userDto);
         return new ResponseEntity(userDto1, HttpStatus.CREATED);
     }
 
     @PutMapping("/{userId}")
-    public ResponseEntity<UserDto> updateUser(@PathVariable String userId, @RequestBody UserDto userDto){
+    public ResponseEntity<UserDto> updateUser(@PathVariable String userId,@Valid @RequestBody UserDto userDto){
         UserDto updatedUserDto = userService.updateUser(userDto,userId);
         return new ResponseEntity<>(updatedUserDto,HttpStatus.OK);
     }

@@ -2,6 +2,7 @@ package com.aditya.electronic.store.services.impl;
 
 import com.aditya.electronic.store.dtos.UserDto;
 import com.aditya.electronic.store.entities.User;
+import com.aditya.electronic.store.exceptions.ResourceNotFoundException;
 import com.aditya.electronic.store.repositories.UserRepository;
 import com.aditya.electronic.store.services.UserService;
 import jakarta.transaction.UserTransaction;
@@ -36,7 +37,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDto updateUser(UserDto userDto, String userId) {
 
-        User user = userRepository.findById(userId).orElseThrow(()->new RuntimeException("User Not Found With This userId !!!"));
+        User user = userRepository.findById(userId).orElseThrow(()->new ResourceNotFoundException("User Not Found With This userId !!!"));
         user.setName(userDto.getName());
         user.setAbout(userDto.getAbout());
         user.setPassword(userDto.getPassword());
@@ -51,7 +52,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void deleteUser(String userId) {
-        User user = userRepository.findById(userId).orElseThrow(()->new RuntimeException("User Not Found With This userId !!!"));
+        User user = userRepository.findById(userId).orElseThrow(()->new ResourceNotFoundException("User Not Found With This userId !!!"));
         userRepository.delete(user);
     }
 
@@ -64,13 +65,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto getUserById(String userId) {
-       User user = userRepository.findById(userId).orElseThrow(()->new RuntimeException("User not found with this id !!!!"));
+       User user = userRepository.findById(userId).orElseThrow(()->new ResourceNotFoundException("User not found with this id !!!!"));
         return entityToDto(user );
     }
 
     @Override
     public UserDto getUserByEmail(String email) {
-        User user = userRepository.findByEmail(email).orElseThrow(()-> new RuntimeException("User Not found with this email !!!"));
+        User user = userRepository.findByEmail(email).orElseThrow(()-> new ResourceNotFoundException("User Not found with this email !!!"));
         UserDto userDto =  entityToDto(user);
         return userDto;
     }

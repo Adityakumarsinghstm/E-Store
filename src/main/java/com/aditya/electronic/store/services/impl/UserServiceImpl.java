@@ -1,8 +1,10 @@
 package com.aditya.electronic.store.services.impl;
 
+import com.aditya.electronic.store.dtos.PageableResponse;
 import com.aditya.electronic.store.dtos.UserDto;
 import com.aditya.electronic.store.entities.User;
 import com.aditya.electronic.store.exceptions.ResourceNotFoundException;
+import com.aditya.electronic.store.helper.Helper;
 import com.aditya.electronic.store.repositories.UserRepository;
 import com.aditya.electronic.store.services.UserService;
 import jakarta.transaction.UserTransaction;
@@ -61,15 +63,15 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserDto> getAllUser(int pageNumber, int pageSize,String sortBy, String sortDir) {
+    public PageableResponse<UserDto> getAllUser(int pageNumber, int pageSize, String sortBy, String sortDir) {
        // Sort sort = (sortDir.equalsIgnoreCase("desc")) ? (Sort.by(sortDir).descending()) : (Sort.by(sortDir).ascending());
         Sort  sort = (sortDir.equalsIgnoreCase("desc"))?(Sort.by(sortBy).descending()):(Sort.by(sortBy).ascending());
-        Pageable pageable = PageRequest.of(pageNumber,pageSize,sort);
+        Pageable pageable = PageRequest.of(pageNumber-1,pageSize,sort);
 
         Page<User> pages = userRepository.findAll(pageable);
-        List<User> users = pages.getContent();
-        List<UserDto> userDto = users.stream().map(user -> entityToDto(user)).collect(Collectors.toList());
-        return userDto;
+
+        PageableResponse<UserDto> response = Helper.getPageableResponse(pages,UserDto.class);
+        return response;
     }
 
     @Override

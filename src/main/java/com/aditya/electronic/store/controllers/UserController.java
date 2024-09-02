@@ -1,6 +1,7 @@
 package com.aditya.electronic.store.controllers;
 
 import com.aditya.electronic.store.dtos.ApiResponseMessage;
+import com.aditya.electronic.store.dtos.PageableResponse;
 import com.aditya.electronic.store.dtos.UserDto;
 import com.aditya.electronic.store.entities.User;
 import com.aditya.electronic.store.services.UserService;
@@ -41,9 +42,14 @@ public class UserController {
        return new ResponseEntity<>(message,HttpStatus.OK);
     }
     @GetMapping
-    public ResponseEntity<List<UserDto>> getAllUsers()
+    public ResponseEntity<PageableResponse<UserDto>> getAllUsers(
+            @RequestParam(value = "pageNumber",defaultValue = "0",required = false) int pageNumber,
+            @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize,
+            @RequestParam(value = "sortBy", defaultValue = "name",required = false) String sortBy,
+            @RequestParam(value = "sortDir", defaultValue = "ASC", required = false) String sortDir
+    )
     {
-        return new ResponseEntity<>(userService.getAllUser(),HttpStatus.OK);
+        return new ResponseEntity<>(userService.getAllUser(pageNumber,pageSize,sortBy,sortDir),HttpStatus.OK);
     }
     @GetMapping("/{userId}")
     public ResponseEntity<UserDto> getUserById(@PathVariable String userId)

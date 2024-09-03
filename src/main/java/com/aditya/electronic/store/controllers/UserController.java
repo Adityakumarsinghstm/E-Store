@@ -58,7 +58,9 @@ public class UserController {
             @RequestParam(value = "sortDir", defaultValue = "ASC", required = false) String sortDir
     )
     {
-        return new ResponseEntity<>(userService.getAllUser(pageNumber,pageSize,sortBy,sortDir),HttpStatus.OK);
+        PageableResponse<UserDto> users = userService.getAllUser(pageNumber, pageSize, sortBy, sortDir);
+        return new ResponseEntity<>(users, HttpStatus.OK);
+        //return new ResponseEntity<>(userService.getAllUser(pageNumber,pageSize,sortBy,sortDir),HttpStatus.OK);
     }
     @GetMapping("/{userId}")
     public ResponseEntity<UserDto> getUserById(@PathVariable String userId)

@@ -1,6 +1,6 @@
 package com.aditya.electronic.store.services.impl;
 
-import com.aditya.electronic.store.exceptions.BadApiRequest;
+import com.aditya.electronic.store.exceptions.BadApiRequestException;
 import com.aditya.electronic.store.services.FileService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,11 +21,11 @@ public class FileServiceImpl implements FileService {
         String originalFileName = file.getOriginalFilename();
         logger.info("Logger : {}",originalFileName);
         String fileName = UUID.randomUUID().toString();
-        String extension = originalFileName.substring(originalFileName.lastIndexOf("."));
+        String extension = originalFileName.substring(originalFileName.lastIndexOf(".")).toLowerCase();
 
         String fileNameWithExtension = fileName+extension;
-        String fullPathWithExtension = path+ File.pathSeparator+fileNameWithExtension;
-        if(fullPathWithExtension.equalsIgnoreCase(".png") || fullPathWithExtension.equalsIgnoreCase(".jpg") || fullPathWithExtension.equalsIgnoreCase(".jpeg"))
+        String fullPathWithExtension = path+fileNameWithExtension;
+        if(extension.equalsIgnoreCase(".png") || extension.equalsIgnoreCase(".jpg") || extension.equalsIgnoreCase(".jpeg"))
         {
             File folder = new File(path);
             if(!folder.exists())
@@ -36,9 +36,27 @@ public class FileServiceImpl implements FileService {
             return fileNameWithExtension;
         }
         else {
-            throw new BadApiRequest("Image with "+extension+"Not Allowed");
+            throw new BadApiRequestException("Image with "+extension+"Not Allowed");
         }
 
+//        String extension = originalFileName.substring(originalFileName.lastIndexOf(".")).toLowerCase();
+//        if (!extension.equals(".png") && !extension.equals(".jpg") && !extension.equals(".jpeg")) {
+//            throw new BadApiRequest("Image with " + extension + " extension is not allowed.");
+//        }
+//
+//        String fileName = UUID.randomUUID().toString();
+//        String fileNameWithExtension = fileName + extension;
+//
+//        String fullPathWithExtension = path + File.separator + fileNameWithExtension;
+//
+//        File folder = new File(path);
+//        if (!folder.exists()) {
+//            folder.mkdirs();
+//        }
+//
+//        Files.copy(file.getInputStream(), Paths.get(fullPathWithExtension));
+//
+//        return fileNameWithExtension;
     }
 
     @Override

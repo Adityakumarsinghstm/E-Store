@@ -66,7 +66,7 @@ public class UserServiceImpl implements UserService {
     public PageableResponse<UserDto> getAllUser(int pageNumber, int pageSize, String sortBy, String sortDir) {
        // Sort sort = (sortDir.equalsIgnoreCase("desc")) ? (Sort.by(sortDir).descending()) : (Sort.by(sortDir).ascending());
         Sort  sort = (sortDir.equalsIgnoreCase("desc"))?(Sort.by(sortBy).descending()):(Sort.by(sortBy).ascending());
-        Pageable pageable = PageRequest.of(pageNumber-1,pageSize,sort);
+        Pageable pageable = PageRequest.of(pageNumber,pageSize,sort);
 
         Page<User> pages = userRepository.findAll(pageable);
 

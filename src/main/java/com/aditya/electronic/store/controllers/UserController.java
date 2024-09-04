@@ -7,15 +7,22 @@ import com.aditya.electronic.store.dtos.UserDto;
 import com.aditya.electronic.store.entities.User;
 import com.aditya.electronic.store.services.FileService;
 import com.aditya.electronic.store.services.UserService;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.StreamUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.http.HttpResponse;
 import java.util.List;
 
 @RestController
@@ -27,6 +34,9 @@ public class UserController {
     private FileService fileService;
     @Value("${user.profile.image.path}")
     private String imageUploadPath;
+
+    private Logger logger = LoggerFactory.getLogger(UserController.class);
+
     @PostMapping
     public ResponseEntity<UserDto> createUser(@Valid @RequestBody UserDto userDto)
     {
@@ -89,5 +99,14 @@ public class UserController {
                .status(HttpStatus.CREATED)
                .build();
        return new ResponseEntity<>(imageResponse,HttpStatus.CREATED);
+    }
+
+    @GetMapping("/image/{userId}")
+    public void serveUserImage(@PathVariable String userId, HttpServletResponse response) throws IOException {
+        UserDto user = userService.getUserById(userId);
+        logger.info("User image name : {}",user.getImageName());
+        InputStream resource = fileService.getResource(imageUploadPath,user.getImageName());
+        response.setContentType(MediaType.IMAGE_JPEG_VALUE);
+        StreamUtils.copy(resource,response.getOutputStream());
     }
 }

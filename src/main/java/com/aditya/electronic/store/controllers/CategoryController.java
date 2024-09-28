@@ -4,6 +4,7 @@ import com.aditya.electronic.store.dtos.ApiResponseMessage;
 import com.aditya.electronic.store.dtos.CategoryDto;
 import com.aditya.electronic.store.dtos.PageableResponse;
 import com.aditya.electronic.store.services.CategoryService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +18,7 @@ public class CategoryController {
 
     //API for Creating Category
     @PostMapping
-    public ResponseEntity<CategoryDto> createCategory(@RequestBody CategoryDto categoryDto)
+    public ResponseEntity<CategoryDto> createCategory(@Valid @RequestBody CategoryDto categoryDto)
     {
         CategoryDto categoryDto1 = categoryService.create(categoryDto);
         return new ResponseEntity<>(categoryDto1, HttpStatus.CREATED);
@@ -49,7 +50,7 @@ public class CategoryController {
     @GetMapping
     public ResponseEntity<PageableResponse<CategoryDto>> getAll(
             @RequestParam(value = "pageNumber", required = false,defaultValue = "0") int pageNumber,
-            @RequestParam(value = "pageSize", required = false,defaultValue = "0") int pageSize,
+            @RequestParam(value = "pageSize", required = false,defaultValue = "10") int pageSize,
             @RequestParam(value = "sortBy", required = false, defaultValue = "title") String sortBy,
             @RequestParam(value = "sortDir", required = false, defaultValue = "asc" ) String sortDir
     )

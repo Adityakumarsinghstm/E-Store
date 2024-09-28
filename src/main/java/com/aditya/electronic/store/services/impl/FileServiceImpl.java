@@ -24,7 +24,7 @@ public class FileServiceImpl implements FileService {
         String extension = originalFileName.substring(originalFileName.lastIndexOf(".")).toLowerCase();
 
         String fileNameWithExtension = fileName+extension;
-        String fullPathWithExtension = path+fileNameWithExtension;
+        String fullPathWithExtension = path+File.separator+fileNameWithExtension;
         if(extension.equalsIgnoreCase(".png") || extension.equalsIgnoreCase(".jpg") || extension.equalsIgnoreCase(".jpeg"))
         {
             File folder = new File(path);

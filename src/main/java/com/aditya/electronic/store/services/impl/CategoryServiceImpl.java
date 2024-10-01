@@ -8,7 +8,10 @@ import com.aditya.electronic.store.helper.Helper;
 import com.aditya.electronic.store.repositories.CategoryRepository;
 import com.aditya.electronic.store.services.CategoryService;
 import org.modelmapper.ModelMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -16,17 +19,29 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.NoSuchFileException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.UUID;
+
 @Service
 public class CategoryServiceImpl implements CategoryService {
    // @Autowired
    // CategoryService categoryService;
+    private Logger logger = LoggerFactory.getLogger(CategoryServiceImpl.class);
     @Autowired
     private ModelMapper mapper;
     @Autowired
     private CategoryRepository categoryRepository;
+    @Value("${category.coverImage.image.path}")
+    private String imagePath;
     @Override
     public CategoryDto create(CategoryDto categoryDto) {
+        String categoryId = UUID.randomUUID().toString();
         Category category = dtoToEntity(categoryDto);
+        category.setId(categoryId);
         Category savedCategory =  categoryRepository.save(category);
         CategoryDto categoryDto1 = entityToDto(savedCategory);
         return categoryDto1;
@@ -46,6 +61,21 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public void delete(String categoryId) {
         Category category = categoryRepository.findById(categoryId).orElseThrow(()-> new ResourceNotFoundException("Category Not found with this categoryId !!"));
+        String fullPath = imagePath+category.getCoverImage();
+        try
+        {
+            Path path = Paths.get(fullPath);
+            Files.delete(path);
+        }
+        catch(NoSuchFileException ex)
+        {
+            logger.info("User Image Not Found in Folder ");
+            ex.printStackTrace();
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
         categoryRepository.delete(category);
     }
 

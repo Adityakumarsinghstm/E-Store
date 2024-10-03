@@ -2,9 +2,11 @@ package com.aditya.electronic.store.services.impl;
 
 import com.aditya.electronic.store.dtos.PageableResponse;
 import com.aditya.electronic.store.dtos.ProductDto;
+import com.aditya.electronic.store.entities.Category;
 import com.aditya.electronic.store.entities.Product;
 import com.aditya.electronic.store.exceptions.ResourceNotFoundException;
 import com.aditya.electronic.store.helper.Helper;
+import com.aditya.electronic.store.repositories.CategoryRepository;
 import com.aditya.electronic.store.repositories.ProductRepository;
 import com.aditya.electronic.store.services.ProductService;
 import org.modelmapper.ModelMapper;
@@ -33,6 +35,8 @@ public class ProductServiceImpl implements ProductService {
     private ModelMapper mapper;
     @Autowired
     private ProductRepository productRepository;
+    @Autowired
+    private CategoryRepository categoryRepository;
     @Value("${product.image.path}")
     private String imagePath;
     private Logger logger = LoggerFactory.getLogger(ProductServiceImpl.class);
@@ -122,6 +126,18 @@ public class ProductServiceImpl implements ProductService {
         return Helper.getPageableResponse(page,ProductDto.class);
     }
 
+    @Override
+    public ProductDto createWithCategory(ProductDto productDto, String categoryId) {
+        Category category = categoryRepository.findById(categoryId).orElseThrow(()->new ResourceNotFoundException("Category Not Found with this categoryId !!!"));
+        Product product = mapper.map(productDto, Product.class);
+        String productId = UUID.randomUUID().toString();
+        product.setId(productId);
+        product.setAddedDate(new Date());
+        product.setCategory(category);
+        Product savedProduct = productRepository.save(product);
+        return mapper.map(savedProduct,ProductDto.class);
+
+    }
 
 
 }

@@ -1,6 +1,7 @@
 package com.aditya.electronic.store.dtos;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import java.util.Date;
@@ -20,4 +21,9 @@ public class ProductDto {
     private Date addedDate;
     private boolean live;
     private boolean stock;
+
+    private String productImageName;
+
+    @JsonIgnore
+    private CategoryDto category;
 }

@@ -12,10 +12,11 @@ import java.util.stream.Collectors;
 public class Helper {
     public static <U,V> PageableResponse<V> getPageableResponse(Page<U> pages,Class<V> type)
     {
-        List<U> users = pages.getContent();
-        List<V> userDto = users.stream().map(object -> new ModelMapper().map(object,type)).collect(Collectors.toList());
+        List<U> entity = pages.getContent();
+        List<V> dtoList = entity.stream().map(object -> new ModelMapper().map(object,type)).collect(Collectors.toList());
         PageableResponse response = new PageableResponse();
-        response.setContent(pages.getContent());
+        //response.setContent(pages.getContent());
+        response.setContent(dtoList);
         response.setPageNumber(pages.getNumber()+1);
         response.setPageSize(pages.getSize());
         response.setTotalElement(pages.getTotalElements());

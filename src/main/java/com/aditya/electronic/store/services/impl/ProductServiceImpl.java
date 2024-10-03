@@ -1,5 +1,6 @@
 package com.aditya.electronic.store.services.impl;
 
+import com.aditya.electronic.store.dtos.CategoryDto;
 import com.aditya.electronic.store.dtos.PageableResponse;
 import com.aditya.electronic.store.dtos.ProductDto;
 import com.aditya.electronic.store.entities.Category;
@@ -136,6 +137,25 @@ public class ProductServiceImpl implements ProductService {
         product.setCategory(category);
         Product savedProduct = productRepository.save(product);
         return mapper.map(savedProduct,ProductDto.class);
+
+    }
+
+    @Override
+    public ProductDto updateProduct(String productId, String categoryId) {
+        Product product = productRepository.findById(productId).orElseThrow(()->new ResourceNotFoundException("Product Not Found with this Product Id"));
+        Category category = categoryRepository.findById(categoryId).orElseThrow(()->new ResourceNotFoundException("Category Not Found with categoryId"));
+        product.setCategory(category);
+        Product savedProduct = productRepository.save(product);
+        return mapper.map(savedProduct,ProductDto.class);
+    }
+
+    @Override
+    public PageableResponse<ProductDto> getAllofCategories(String categoryId,int pageNumber, int pageSize, String sortBy, String sortDir) {
+        Category category = categoryRepository.findById(categoryId).orElseThrow(()->new ResourceNotFoundException("Category Not Found with categoryId"));
+        Sort sort = (sortDir.equalsIgnoreCase("desc"))?(Sort.by(sortBy).descending()):(Sort.by(sortBy).ascending());
+        Pageable pageable = PageRequest.of(pageNumber,pageSize,sort);
+        Page<Product> products = productRepository.findByCategory(category,pageable);
+        return Helper.getPageableResponse(products,ProductDto.class);
 
     }
 

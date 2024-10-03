@@ -22,4 +22,8 @@ public interface ProductService {
 
     ProductDto createWithCategory(ProductDto productDto, String categoryId);
 
+    ProductDto updateProduct (String productId, String categoryId);
+
+    PageableResponse<ProductDto> getAllofCategories(String categoryId,int pageNumber, int pageSize, String sortBy, String sortDir);
+
 }

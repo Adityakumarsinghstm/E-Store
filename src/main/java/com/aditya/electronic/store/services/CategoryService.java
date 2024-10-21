@@ -4,7 +4,7 @@ import com.aditya.electronic.store.dtos.CategoryDto;
 import com.aditya.electronic.store.dtos.PageableResponse;
 import org.springframework.stereotype.Service;
 
-@Service
+
 public interface CategoryService {
     CategoryDto create(CategoryDto categoryDto);
 

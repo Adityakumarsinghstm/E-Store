@@ -6,12 +6,17 @@ import com.aditya.electronic.store.dtos.PageableResponse;
 import com.aditya.electronic.store.entities.*;
 import com.aditya.electronic.store.exceptions.BadApiRequestException;
 import com.aditya.electronic.store.exceptions.ResourceNotFoundException;
+import com.aditya.electronic.store.helper.Helper;
 import com.aditya.electronic.store.repositories.CartRepository;
 import com.aditya.electronic.store.repositories.OrderRepository;
 import com.aditya.electronic.store.repositories.UserRepository;
 import com.aditya.electronic.store.services.OrderService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.security.PrivateKey;
@@ -86,15 +91,25 @@ public class OrderServiceImp implements OrderService {
     @Override
     public void removeDto(String orderId) {
 
+        Order order = orderRepository.findById(orderId).orElseThrow(()->new ResourceNotFoundException("Order not found with this Id !!"));
+        orderRepository.delete(order);
+
     }
 
     @Override
     public List<OrderDto> getOrderOfUser(String userId) {
-        return List.of();
+        User user = userRepository.findById(userId).orElseThrow(()-> new ResourceNotFoundException("User not found with this Id !!"));
+        List<Order> orders = orderRepository.findByUser(user);
+        List<OrderDto> orderDtos = orders.stream().map(order -> modelMapper.map(order,OrderDto.class)).collect(Collectors.toList());
+        return orderDtos;
     }
 
     @Override
     public PageableResponse<OrderDto> getOrders(int pageNumber, int pageSize, String sortBy, String sortDir) {
-        return null;
+
+        Sort  sort = (sortDir.equalsIgnoreCase("desc"))?(Sort.by(sortBy).descending()):(Sort.by(sortBy).ascending());
+        Pageable pageable = PageRequest.of(pageNumber,pageSize,sort);
+        Page<Order> page = orderRepository.findAll(pageable);
+        return Helper.getPageableResponse(page,OrderDto.class);
     }
 }

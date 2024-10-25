@@ -19,14 +19,10 @@ public class Cart {
 
     @Id
     private String cartId;
-
     private Date createdAt;
     @OneToOne
-   // @JoinColumn(name = "user_id")
-    @JsonIgnore
     private User user;
-
-    @OneToMany(mappedBy = "cart",cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonManagedReference
+    //mapping cart-items
+    @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     private List<CartItem> items = new ArrayList<>();
 }

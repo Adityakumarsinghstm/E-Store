@@ -2,6 +2,7 @@ package com.aditya.electronic.store.services.impl;
 
 import com.aditya.electronic.store.dtos.CreateOrderRequest;
 import com.aditya.electronic.store.dtos.OrderDto;
+import com.aditya.electronic.store.dtos.OrderItemsDto;
 import com.aditya.electronic.store.dtos.PageableResponse;
 import com.aditya.electronic.store.entities.*;
 import com.aditya.electronic.store.exceptions.BadApiRequestException;
@@ -19,7 +20,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.security.PrivateKey;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -41,32 +41,38 @@ public class OrderServiceImp implements OrderService {
 
         String userId = orderDto.getUserId();
         String cartId = orderDto.getCartId();
+        //fetch user
+        User user = userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User not found with given id !!"));
 
-        User user = userRepository.findById(userId).orElseThrow(()-> new ResourceNotFoundException("User Not Found With this Id !!"));
-
-        Cart cart = cartRepository.findById(cartId).orElseThrow(()-> new ResourceNotFoundException("Cart Not Found with this Id !!"));
+        //fetch cart
+        Cart cart = cartRepository.findById(cartId).orElseThrow(() -> new ResourceNotFoundException("Cart with given id not found on server !!"));
 
         List<CartItem> cartItems = cart.getItems();
-        if(cartItems.size()<=0)
-        {
+
+        if (cartItems.size() <= 0) {
             throw new BadApiRequestException("Invalid number of items in cart !!");
+
         }
 
+        //other checks
+
         Order order = Order.builder()
-                .billingAddress(orderDto.getBillingAddress())
                 .billingName(orderDto.getBillingName())
                 .billingPhone(orderDto.getBillingPhone())
+                .billingAddress(orderDto.getBillingAddress())
                 .orderedDate(new Date())
-                .delhiveredDate(null)
+                .deliveredDate(null)
                 .paymentStatus(orderDto.getPaymentStatus())
                 .orderStatus(orderDto.getOrderStatus())
                 .orderId(UUID.randomUUID().toString())
                 .user(user)
                 .build();
 
-        AtomicReference<Integer> orderAmount = new AtomicReference<>();
-        List<OrderItems> orderItems = cartItems.stream().map(cartItem -> {
+//        orderItems,amount
 
+        AtomicReference<Integer> orderAmount = new AtomicReference<>(0);
+        List<OrderItems> orderItems = cartItems.stream().map(cartItem -> {
+//            CartItem->OrderItem
             OrderItems orderItem = OrderItems.builder()
                     .quantity(cartItem.getQuantity())
                     .product(cartItem.getProduct())
@@ -81,15 +87,15 @@ public class OrderServiceImp implements OrderService {
         order.setOrderItems(orderItems);
         order.setOrderAmount(orderAmount.get());
 
+        //
         cart.getItems().clear();
         cartRepository.save(cart);
-        Order  savedOrder = orderRepository.save(order);
-
-        return modelMapper.map(savedOrder,OrderDto.class);
+        Order savedOrder = orderRepository.save(order);
+        return modelMapper.map(savedOrder, OrderDto.class);
     }
 
     @Override
-    public void removeDto(String orderId) {
+    public void removeOrder(String orderId) {
 
         Order order = orderRepository.findById(orderId).orElseThrow(()->new ResourceNotFoundException("Order not found with this Id !!"));
         orderRepository.delete(order);

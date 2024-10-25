@@ -17,18 +17,14 @@ import java.util.List;
 public class OrderDto {
 
     private String orderId;
-    private String orderStatus = "PENDING";
-
-    private String paymentStatus = "NOTPAID";
+    private String orderStatus="PENDING";
+    private String paymentStatus="NOTPAID";
     private int orderAmount;
     private String billingAddress;
-    private String billingName;
     private String billingPhone;
-
-    private Date orderedDate = new Date();
-    private Date delhiveredDate;
-
+    private String billingName;
+    private Date orderedDate=new Date();
+    private Date deliveredDate;
     //private UserDto user;
-
     private List<OrderItemsDto> orderItems = new ArrayList<>();
 }

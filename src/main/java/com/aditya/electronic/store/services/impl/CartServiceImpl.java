@@ -19,10 +19,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 @Service
@@ -61,11 +58,11 @@ public class CartServiceImpl implements CartService {
             cart.setCreatedAt(new Date());
             cart.setCartId(UUID.randomUUID().toString());
         }
-
-        List<CartItem> items = cart.getItems();
         AtomicReference<Boolean> updated = new AtomicReference<>(false);
 
-        List<CartItem> updatedItems = items.stream().map(item->{
+        List<CartItem> items = cart.getItems();
+
+        items= items.stream().map(item->{
             if(item.getProduct().getId().equals(productId)){
                 item.setQuantity(quantity);
                 item.setTotalPrice(quantity * product.getDiscountedPrice());
@@ -74,7 +71,7 @@ public class CartServiceImpl implements CartService {
             return item;
         }).collect(Collectors.toList());
 
-        cart.setItems(updatedItems);
+       // cart.setItems(updatedItems);
 
        if(!updated.get())
        {

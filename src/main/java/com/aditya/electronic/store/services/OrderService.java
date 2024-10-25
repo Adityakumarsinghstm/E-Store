@@ -10,7 +10,7 @@ public interface OrderService {
 
     OrderDto createOrder(CreateOrderRequest orderDto);
 
-    void removeDto(String orderId);
+    void removeOrder(String orderId);
 
     List<OrderDto> getOrderOfUser(String userId);
 

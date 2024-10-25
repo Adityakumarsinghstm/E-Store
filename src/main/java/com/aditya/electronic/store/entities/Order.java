@@ -17,22 +17,34 @@ import java.util.List;
 public class Order {
     @Id
     private String orderId;
+
+    //PENDING,DISPATCHED,DELIVERED,
+    //enum
     private String orderStatus;
 
+    //NOT-PAID, PAID
+    //enum
+    //boolean- false=>NOTPAID  || true=>PAID
     private String paymentStatus;
+
     private int orderAmount;
+
     @Column(length = 1000)
     private String billingAddress;
-    private String billingName;
+
     private String billingPhone;
 
-    private Date orderedDate;
-    private Date delhiveredDate;
+    private String billingName;
 
+    private Date orderedDate;
+
+    private Date deliveredDate;
+
+    //user
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
     private User user;
 
-    @OneToMany(mappedBy = "order",fetch = FetchType.EAGER,cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "order", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<OrderItems> orderItems = new ArrayList<>();
 }

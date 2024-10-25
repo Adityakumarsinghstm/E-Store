@@ -14,10 +14,9 @@ import java.util.List;
 @Setter
 @Builder
 public class CartDto {
+
     private String cartId;
-
     private Date createdAt;
-    private User user;
-
-    private List<CartItem> items = new ArrayList<>();
+    private UserDto user;
+    private List<CartItemDto> items = new ArrayList<>();
 }

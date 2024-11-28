@@ -9,6 +9,7 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,6 +21,7 @@ public class OrderController {
     private OrderService orderService;
 
     @PostMapping
+    @PreAuthorize("hasAnyRole('NORMAL','ADMIN'")
     public ResponseEntity<OrderDto> createOrder(@Valid @RequestBody CreateOrderRequest request)
     {
         OrderDto orderDto = orderService.createOrder(request);
@@ -27,6 +29,7 @@ public class OrderController {
     }
 
     @DeleteMapping("/{orderId}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ApiResponseMessage> removeOrder(@PathVariable String orderId)
     {
         orderService.removeOrder(orderId);
@@ -39,6 +42,7 @@ public class OrderController {
     }
 
     @GetMapping("users/{userId}")
+    @PreAuthorize("hasAnyRole('NORMAL','ADMIN')")
     public ResponseEntity<List<OrderDto>> getOrdersOfUser(@PathVariable String userId)
     {
         List<OrderDto> ordersOfUser = orderService.getOrderOfUser(userId);
@@ -46,6 +50,7 @@ public class OrderController {
     }
 
     @GetMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<PageableResponse<OrderDto>> getOders(
             @RequestParam(value = "pageNumber",defaultValue = "0",required = false) int pageNumber,
             @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize,

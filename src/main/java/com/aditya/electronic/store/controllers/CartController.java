@@ -7,6 +7,7 @@ import com.aditya.electronic.store.services.CartService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -16,6 +17,7 @@ public class CartController {
     private CartService cartService;
 
     @PostMapping("/{userId}")
+    @PreAuthorize("hasAnyRole('ADMIN','NORMAL')")
     public ResponseEntity<CartDto> addItemToCart(@PathVariable String userId, @RequestBody AddItemToCartRequest request)
     {
         CartDto cartDto = cartService.addItemToCart(userId,request);
@@ -23,6 +25,7 @@ public class CartController {
     }
 
     @DeleteMapping("/{userId}/items/{itemId}")
+    @PreAuthorize("hasAnyRole('ADMIN','NORMAL')")
     public ResponseEntity<ApiResponseMessage> removeItemFromCart(@PathVariable String userId,@PathVariable int itemId)
     {
         cartService.removeItemFromCart(userId,itemId);
@@ -36,6 +39,7 @@ public class CartController {
 
 
     @DeleteMapping("/{userId}")
+    @PreAuthorize("hasAnyRole('ADMIN','NORMAL')")
     public ResponseEntity<ApiResponseMessage> clearCart(@PathVariable String userId)
     {
         cartService.clearCart(userId);
@@ -47,6 +51,7 @@ public class CartController {
         return new ResponseEntity<>(response,HttpStatus.OK);
     }
     @GetMapping("/{userId}")
+    @PreAuthorize("hasAnyRole('ADMIN','NORMAL')")
     public ResponseEntity<CartDto> getItemToCart(@PathVariable String userId)
     {
         CartDto cartDto = cartService.getCartByUser(userId);

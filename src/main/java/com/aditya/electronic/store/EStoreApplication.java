@@ -1,12 +1,16 @@
 package com.aditya.electronic.store;
 
 import com.aditya.electronic.store.entities.Role;
+import com.aditya.electronic.store.entities.User;
 import com.aditya.electronic.store.repositories.RoleRepository;
+import com.aditya.electronic.store.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.util.List;
 import java.util.UUID;
 
 @SpringBootApplication
@@ -14,6 +18,11 @@ public class EStoreApplication implements CommandLineRunner {
 
 	@Autowired
 	private RoleRepository roleRepository;
+	@Autowired
+	private UserRepository userRepository;
+	@Autowired
+	private PasswordEncoder passwordEncoder;
+
 	public static void main(String[] args) {
 		SpringApplication.run(EStoreApplication.class, args);
 	}
@@ -36,6 +45,20 @@ public class EStoreApplication implements CommandLineRunner {
 			normalRole.setRoleId(UUID.randomUUID().toString());
 			normalRole.setName("ROLE_NORMAL");
 			roleRepository.save(normalRole);
+		}
+
+		 User user = userRepository.findByEmail("aditya@gmail.com").orElse(null);
+		if(user == null)
+		{
+			user = new User();
+			user.setUserId(UUID.randomUUID().toString());
+			user.setName("aditya");
+			user.setEmail("aditya@gmail.com");
+			user.setPassword(passwordEncoder.encode("aditya"));
+			user.setAbout("Backend Engineer");
+			user.setGender("Male");
+			user.setRoles(List.of(adminRole));
+			userRepository.save(user);
 		}
 	}
 }

@@ -2,9 +2,11 @@ package com.aditya.electronic.store.services.impl;
 
 import com.aditya.electronic.store.dtos.PageableResponse;
 import com.aditya.electronic.store.dtos.UserDto;
+import com.aditya.electronic.store.entities.Role;
 import com.aditya.electronic.store.entities.User;
 import com.aditya.electronic.store.exceptions.ResourceNotFoundException;
 import com.aditya.electronic.store.helper.Helper;
+import com.aditya.electronic.store.repositories.RoleRepository;
 import com.aditya.electronic.store.repositories.UserRepository;
 import com.aditya.electronic.store.services.UserService;
 import jakarta.transaction.UserTransaction;
@@ -17,6 +19,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -35,6 +38,10 @@ public class UserServiceImpl implements UserService {
     private UserRepository userRepository;
     @Autowired
    private ModelMapper mapper;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+    @Autowired
+    private RoleRepository roleRepository;
 
     @Value("${user.profile.image.path}")
     private String imagePath;
@@ -46,6 +53,13 @@ public class UserServiceImpl implements UserService {
         String userId = UUID.randomUUID().toString();
         userDto.setUserId(userId);
        User user = dtoToEnitity(userDto);
+       user.setPassword(passwordEncoder.encode(user.getPassword()));
+
+       Role role = new Role();
+       role.setRoleId(UUID.randomUUID().toString());
+       role.setName("ROLE_NORMAL");
+       Role roleNormal = roleRepository.findByName("ROLE_NORMAL").orElse(role);
+       user.setRoles(List.of(roleNormal));
        User savedUser = userRepository.save(user);
        UserDto userDto1 = entityToDto(savedUser);
         return userDto1;

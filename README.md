@@ -38,6 +38,8 @@ An advanced backend solution for e-commerce applications with robust features, s
 -- [View ER Diagram here](ER_Diagram_E_Store.png)
 --![ER_Diagram_E_Store](https://github.com/user-attachments/assets/8cc91239-689e-4931-83c3-db1743ad55d9)
 
+## DFD Diagram
+--![DFD_Diagram_E_Store](https://github.com/user-attachments/assets/969f8c2b-60fb-4842-9abe-ecfee562de08)
 
 
 ## Technology Stack  

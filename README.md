@@ -35,10 +35,10 @@ An advanced backend solution for e-commerce applications with robust features, s
 ---
 
 ## ER Diagram
--- ![ER Diagram](file:///C:/Users/adity/Downloads/DALL%C2%B7E%202024-12-04%2013.57.58%20-%20A%20normal%20ER%20(Entity-Relationship)%20diagram%20for%20an%20e-commerce%20application,%20featuring%20entities%20and%20their%20relationships_%20_1.%20Entities_%20Cart,%20CartItem,%20Cat.webp)
+-- [View PDF]()
 
 ## UML Diagram
--- ![UML Diagram](file:///C:/Users/adity/Downloads/DALL%C2%B7E%202024-12-04%2013.56.51%20-%20A%20clear%20and%20simplified%20UML%20class%20diagram%20for%20an%20e-commerce%20RESTful%20application%20showcasing%20entities_%20Cart,%20CartItem,%20Category,%20Order,%20OrderItems,%20Produ.webp)
+-- [View PDF](C:\Users\adity\Downloads/uml_diagram)
 ## Technology Stack  
 
 - **Programming Language**: Java  

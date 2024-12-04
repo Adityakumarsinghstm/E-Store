@@ -35,7 +35,7 @@ An advanced backend solution for e-commerce applications with robust features, s
 ---
 
 ## ER Diagram
--- [View ER Diagram here](ER_Diagram.pdf)
+-- [View ER Diagram here](ER_Diagram_E_Store.png)
 --
 
 

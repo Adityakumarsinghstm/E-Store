@@ -1,4 +1,4 @@
-# E-Cart RESTful Application  
+# E-Store RESTful Application  
 
 An advanced backend solution for e-commerce applications with robust features, scalable architecture, and efficient API interactions.  
 

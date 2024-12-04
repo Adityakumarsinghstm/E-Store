@@ -35,7 +35,7 @@ An advanced backend solution for e-commerce applications with robust features, s
 ---
 
 ## ER Diagram
--- [View PDF](ER_Diagram.pdf)
+-- [View PDF](C:\Users\adity\Downloads/ER_Diagram.pdf)
 
 
 ## UML Diagram

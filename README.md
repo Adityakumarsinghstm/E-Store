@@ -34,12 +34,23 @@ An advanced backend solution for e-commerce applications with robust features, s
 
 ---
 
+## DFD Diagram
+### Level Zero DFD Diagram
+-- ![Level_Zero drawio](https://github.com/user-attachments/assets/7d18994b-9acc-45e9-869e-5f5e78aeb125)
+---
+### Level One DFD Diagram
+--![Level one](https://github.com/user-attachments/assets/05443b15-540c-4f3a-8bb8-3bb5bffb92eb)
+---
+### Level Two DFD Diagram
+--![Level_Two](https://github.com/user-attachments/assets/bf04912e-c50a-49cd-b1ed-2cebecae9b55)
+
+
 ## ER Diagram
 -- [View ER Diagram here](ER_Diagram_E_Store.png)
 --![ER_Diagram_E_Store](https://github.com/user-attachments/assets/8cc91239-689e-4931-83c3-db1743ad55d9)
 
-## DFD Diagram
---![DFD_Diagram_E_Store](https://github.com/user-attachments/assets/969f8c2b-60fb-4842-9abe-ecfee562de08)
+
+
 
 
 ## Technology Stack  

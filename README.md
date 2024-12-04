@@ -35,7 +35,7 @@ An advanced backend solution for e-commerce applications with robust features, s
 ---
 
 ## ER Diagram
--- ![ER Diagram](images/ER-diagram.webp)
+-- [View PDF](ER_Diagram.pdf)
 
 
 ## UML Diagram

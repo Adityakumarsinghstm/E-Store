@@ -1,5 +1,6 @@
 package com.aditya.electronic.store;
 
+import com.aditya.electronic.store.config.AppConstants;
 import com.aditya.electronic.store.entities.Role;
 import com.aditya.electronic.store.entities.User;
 import com.aditya.electronic.store.repositories.RoleRepository;
@@ -29,21 +30,21 @@ public class EStoreApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-		Role adminRole = roleRepository.findByName("ROLE_ADMIN").orElse(null);
+		Role adminRole = roleRepository.findByName("ROLE_"+AppConstants.ROLE_ADMIN).orElse(null);
 		if(adminRole == null)
 		{
 			adminRole = new Role();
 			adminRole.setRoleId(UUID.randomUUID().toString());
-			adminRole.setName("ROLE_ADMIN");
+			adminRole.setName("ROLE_"+AppConstants.ROLE_ADMIN);
 			roleRepository.save(adminRole);
 		}
 
-		Role normalRole = roleRepository.findByName("ROLE_NORMAL").orElse(null);
+		Role normalRole = roleRepository.findByName("ROLE_"+AppConstants.ROLE_NORMAL).orElse(null);
 		if(normalRole == null)
 		{
 			normalRole = new Role();
 			normalRole.setRoleId(UUID.randomUUID().toString());
-			normalRole.setName("ROLE_NORMAL");
+			normalRole.setName("ROLE_"+ AppConstants.ROLE_NORMAL);
 			roleRepository.save(normalRole);
 		}
 

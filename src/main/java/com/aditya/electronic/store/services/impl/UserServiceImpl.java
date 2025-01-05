@@ -1,5 +1,6 @@
 package com.aditya.electronic.store.services.impl;
 
+import com.aditya.electronic.store.config.AppConstants;
 import com.aditya.electronic.store.dtos.PageableResponse;
 import com.aditya.electronic.store.dtos.UserDto;
 import com.aditya.electronic.store.entities.Role;
@@ -57,8 +58,8 @@ public class UserServiceImpl implements UserService {
 
        Role role = new Role();
        role.setRoleId(UUID.randomUUID().toString());
-       role.setName("ROLE_NORMAL");
-       Role roleNormal = roleRepository.findByName("ROLE_NORMAL").orElse(role);
+       role.setName("ROLE_"+AppConstants.ROLE_NORMAL);
+       Role roleNormal = roleRepository.findByName("ROLE_"+AppConstants.ROLE_NORMAL).orElse(role);
        user.setRoles(List.of(roleNormal));
        User savedUser = userRepository.save(user);
        UserDto userDto1 = entityToDto(savedUser);

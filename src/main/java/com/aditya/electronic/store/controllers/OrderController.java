@@ -1,5 +1,6 @@
 package com.aditya.electronic.store.controllers;
 
+import com.aditya.electronic.store.config.AppConstants;
 import com.aditya.electronic.store.dtos.ApiResponseMessage;
 import com.aditya.electronic.store.dtos.CreateOrderRequest;
 import com.aditya.electronic.store.dtos.OrderDto;
@@ -21,7 +22,7 @@ public class OrderController {
     private OrderService orderService;
 
     @PostMapping
-    @PreAuthorize("hasAnyRole('NORMAL','ADMIN'")
+    @PreAuthorize("hasAnyRole('"+ AppConstants.ROLE_NORMAL +"','"+AppConstants.ROLE_ADMIN+"')")
     public ResponseEntity<OrderDto> createOrder(@Valid @RequestBody CreateOrderRequest request)
     {
         OrderDto orderDto = orderService.createOrder(request);
@@ -29,7 +30,7 @@ public class OrderController {
     }
 
     @DeleteMapping("/{orderId}")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('"+AppConstants.ROLE_ADMIN+"')")
     public ResponseEntity<ApiResponseMessage> removeOrder(@PathVariable String orderId)
     {
         orderService.removeOrder(orderId);
@@ -42,7 +43,7 @@ public class OrderController {
     }
 
     @GetMapping("users/{userId}")
-    @PreAuthorize("hasAnyRole('NORMAL','ADMIN')")
+    @PreAuthorize("hasAnyRole('"+AppConstants.ROLE_NORMAL+"','"+AppConstants.ROLE_ADMIN+"')")
     public ResponseEntity<List<OrderDto>> getOrdersOfUser(@PathVariable String userId)
     {
         List<OrderDto> ordersOfUser = orderService.getOrderOfUser(userId);
@@ -50,7 +51,7 @@ public class OrderController {
     }
 
     @GetMapping
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('"+AppConstants.ROLE_ADMIN+"')")
     public ResponseEntity<PageableResponse<OrderDto>> getOders(
             @RequestParam(value = "pageNumber",defaultValue = "0",required = false) int pageNumber,
             @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize,

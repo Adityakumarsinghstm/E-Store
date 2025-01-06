@@ -2,6 +2,7 @@ package com.aditya.electronic.store.config;
 
 import com.aditya.electronic.store.security.JwtAuthenticationEntryPoint;
 import com.aditya.electronic.store.security.JwtAuthenticationFilter;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.context.annotation.Bean;
@@ -18,6 +19,10 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+
+import java.util.List;
 
 @Configuration
 @EnableWebSecurity(debug = true)
@@ -31,7 +36,25 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity security) throws Exception {
         //cors disable
-        security.cors(httpSecurityCorsConfigurer -> httpSecurityCorsConfigurer.disable());
+        //security.cors(httpSecurityCorsConfigurer -> httpSecurityCorsConfigurer.disable());
+
+        //cors enable
+        security.cors(httpSecurityCorsConfigurer ->httpSecurityCorsConfigurer.configurationSource(new CorsConfigurationSource() {
+            @Override
+            public CorsConfiguration getCorsConfiguration(HttpServletRequest request) {
+                CorsConfiguration corsConfiguration = new CorsConfiguration();
+
+                corsConfiguration.setAllowedHeaders(List.of("Authorization"));
+                corsConfiguration.setAllowedMethods(List.of("*"));
+                corsConfiguration.setAllowedOriginPatterns(List.of("*"));
+                corsConfiguration.setAllowCredentials(true);
+                corsConfiguration.setMaxAge(3000L);
+
+                return corsConfiguration;
+            }
+        }));
+
+
         //csrf disable
         security.csrf(httpSecurityCsrfConfigurer -> httpSecurityCsrfConfigurer.disable());
 

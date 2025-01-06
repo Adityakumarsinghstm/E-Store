@@ -4,6 +4,7 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwt;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
@@ -14,9 +15,20 @@ import java.util.function.Function;
 
 @Component
 public class JwtHelper {
-    public static final long TOKEN_VALIDITY = 5 * 60*60*1000;
+    @Value("${jwt.token-validity}")
+    public long TOKEN_VALIDITY; //= 5 * 60*60*1000;
+    /*
+    * previous static token validty was
+    * public static final long TOKEN_VALIDITY = 5 * 60*60*1000;
+    * */
 
+    @Value("${jwt.secret-key}")
+    public String SECRET_KEY;  //= "aadlfdhkdfjeihvkjdhfuwekcfskjdhfwenskdhjfksjeriudmnbldkfjlsfdsdfjshfskjddfjskdjslskdfjslasldkfjcjkhdfsgjuyiewkdsfgjsdhjhajhgdf";
+/*
+* previous static secret key was
     public static final String SECRET_KEY = "aadlfdhkdfjeihvkjdhfuwekcfskjdhfwenskdhjfksjeriudmnbldkfjlsfdsdfjshfskjddfjskdjslskdfjslasldkfjcjkhdfsgjuyiewkdsfgjsdhjhajhgdf";
+*/
+
 
     public String getUserFromToken(String token)
     {

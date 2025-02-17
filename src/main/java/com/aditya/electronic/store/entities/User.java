@@ -35,6 +35,8 @@ public class User implements UserDetails {
     @Column(name = "user_image_name")
     private String imageName;
 
+    private Providers provider;
+
     @OneToMany(mappedBy = "user",fetch = FetchType.LAZY,cascade = CascadeType.REMOVE)
     private List<Order> orders = new ArrayList<>();
 
@@ -78,4 +80,6 @@ public class User implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
+
+
 }

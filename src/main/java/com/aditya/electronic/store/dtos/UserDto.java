@@ -1,5 +1,6 @@
 package com.aditya.electronic.store.dtos;
 
+import com.aditya.electronic.store.entities.Providers;
 import com.aditya.electronic.store.entities.Role;
 import com.aditya.electronic.store.validate.ImageNameValid;
 import jakarta.persistence.Column;
@@ -36,4 +37,6 @@ public class UserDto {
 
     @ImageNameValid
     private String imageName;
+
+    private Providers provider;
 }

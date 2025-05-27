@@ -33,6 +33,15 @@ public class SecurityConfig {
     @Autowired
     private JwtAuthenticationFilter filter;
 
+    private final String[] PUBLIC_URLS = {
+            "/swagger-ui/**",
+            "/swagger-resources/**",
+            "/webjars/**",
+            "/v3/api-docs",
+//            "/v2/api-docs",
+            "/test"
+    };
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity security) throws Exception {
         //cors disable
@@ -69,6 +78,7 @@ public class SecurityConfig {
                     .requestMatchers(HttpMethod.GET,"/users/**").permitAll()
                     .requestMatchers(HttpMethod.POST,"/users").permitAll()
                     .requestMatchers(HttpMethod.GET,"/categories/**").permitAll()
+                    .requestMatchers(PUBLIC_URLS).permitAll()
                     .requestMatchers("/categories/**").hasRole(AppConstants.ROLE_ADMIN)
                     .requestMatchers(HttpMethod.POST,"/auth/generate-token","/auth/login-with-google","/auth/regenerate-token").permitAll()
                     .requestMatchers("/auth/**").authenticated()

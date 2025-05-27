@@ -12,11 +12,14 @@ import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdTokenVerifier;
 import com.google.api.client.http.apache.v2.ApacheHttpTransport;
 import com.google.api.client.json.gson.GsonFactory;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -30,10 +33,13 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.security.GeneralSecurityException;
+import java.security.Principal;
 import java.util.List;
 
 @RestController
 @RequestMapping("/auth")
+@Tag(name = "Auth Controller",description = "API for authentication!!")
+@SecurityRequirement(name = "scheme1")
 public class AuthenticationController {
     @Autowired
     private AuthenticationManager authenticationManager;
@@ -59,6 +65,9 @@ public class AuthenticationController {
 
     @Autowired
     private RefreshTokenService refreshTokenService;
+
+
+
 
     @PostMapping("/regenerate-token")
    public ResponseEntity<JwtResponse> regenerateToken(@RequestBody RefreshTokenRequest request)
@@ -196,6 +205,11 @@ public class AuthenticationController {
         }
 
 
+    }
+    @GetMapping("/current")
+    public ResponseEntity<UserDto> getCurrentUser(Principal principal) {
+        String name = principal.getName();
+        return new ResponseEntity<>(modelMapper.map(userDetailsService.loadUserByUsername(name), UserDto.class), HttpStatus.OK);
     }
 
 }

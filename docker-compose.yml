@@ -1,0 +1,35 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: mysql-container
+    environment:
+      MYSQL_DATABASE: electronic_store
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+    networks:
+      - springboot-mysql-net
+
+  springboot-app:
+    build: .
+    container_name: electronic-container
+    ports:
+      - "9090:9090"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/electronic_store
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
+    depends_on:
+      - mysql
+    networks:
+      - springboot-mysql-net
+
+volumes:
+  mysql-data:
+
+networks:
+  springboot-mysql-net:

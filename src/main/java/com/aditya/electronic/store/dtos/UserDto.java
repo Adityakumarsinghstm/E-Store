@@ -3,6 +3,7 @@ package com.aditya.electronic.store.dtos;
 import com.aditya.electronic.store.entities.Providers;
 import com.aditya.electronic.store.entities.Role;
 import com.aditya.electronic.store.validate.ImageNameValid;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.Column;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -21,6 +22,7 @@ public class UserDto {
 
     private String userId;
     @Size(min = 2, max = 15,message = "Invalid name !!")
+    @Schema(name = "username", accessMode = Schema.AccessMode.READ_ONLY,description = "user name of new user !!")
     private String name;
     //@Email(message = "Invalid Email !!")
     @Pattern(regexp = "\\w+([-+.']\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*", message = "Invalid Email")

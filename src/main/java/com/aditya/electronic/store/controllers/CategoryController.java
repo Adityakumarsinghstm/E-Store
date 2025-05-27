@@ -4,6 +4,7 @@ import com.aditya.electronic.store.dtos.*;
 import com.aditya.electronic.store.services.CategoryService;
 import com.aditya.electronic.store.services.FileService;
 import com.aditya.electronic.store.services.ProductService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import org.slf4j.Logger;
@@ -22,6 +23,7 @@ import java.io.InputStream;
 
 @RestController
 @RequestMapping("/categories")
+@SecurityRequirement(name = "scheme1")
 public class CategoryController {
     @Autowired
     private CategoryService categoryService;

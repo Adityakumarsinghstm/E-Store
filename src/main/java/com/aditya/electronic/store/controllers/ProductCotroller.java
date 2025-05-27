@@ -3,6 +3,7 @@ package com.aditya.electronic.store.controllers;
 import com.aditya.electronic.store.dtos.*;
 import com.aditya.electronic.store.services.FileService;
 import com.aditya.electronic.store.services.ProductService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,7 @@ import java.io.InputStream;
 
 @RestController
 @RequestMapping("/products")
+@SecurityRequirement(name = "scheme1")
 public class ProductCotroller {
     @Autowired
     private ProductService productService;

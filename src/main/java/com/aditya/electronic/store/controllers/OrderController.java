@@ -6,6 +6,7 @@ import com.aditya.electronic.store.dtos.CreateOrderRequest;
 import com.aditya.electronic.store.dtos.OrderDto;
 import com.aditya.electronic.store.dtos.PageableResponse;
 import com.aditya.electronic.store.services.OrderService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,6 +18,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/orders")
+@SecurityRequirement(name = "scheme1")
 public class OrderController {
     @Autowired
     private OrderService orderService;
